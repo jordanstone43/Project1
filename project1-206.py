@@ -6,19 +6,38 @@ from datetime import date
 # Hello
 
 def getData(file):
-# get a list of dictionary objects from the file
-#Input: file name
-#Ouput: return a list of dictionary objects where
-#the keys are from the first row in the data. and the values are each of the other rows
+	# get a list of dictionary objects from the file
+	#Input: file name
+	#Ouput: return a list of dictionary objects where
+	#the keys are from the first row in the data. and the values are each of the other rows
 
-	pass
+	infile = open(file, "r")
+	lines = infile.readline()
+	infile.close()
+
+	# Initializes list to hold dictionary objects
+	list_of_dicts = []
+
+	first_line = True
+	for line in lines:
+		if first_line:
+			key_titles = line.split(',')
+			first_line = False
+		else:
+			values = line.split(',')
+			line_dict = {}
+			count = 0
+			for x in key_titles:
+				line_dict[x] = values[count]
+				count = count + 1
+			list_of_dicts.append(line_dict)
+	return list_of_dicts
 
 def mySort(data,col):
 # Sort based on key/column
 #Input: list of dictionaries and col (key) to sort on
 #Output: Return the first item in the sorted list as a string of just: firstName lastName
-
-	pass
+	sorted_list = sort(data, key = lambda, )
 
 
 def classSizes(data):
@@ -27,9 +46,27 @@ def classSizes(data):
 # Output: Return a list of tuples sorted by the number of students in that class in
 # descending order
 # [('Senior', 26), ('Junior', 25), ('Freshman', 21), ('Sophomore', 18)]
-
+	# freshman_count = 0
+	# sophomore_count = 0
+	# junior_count = 0
+	# senior_count = 0
+	#
+	# for dict in data:
+	# 	if dict[3] == "Freshman":
+	# 		freshman_count = freshman_count + 1
+	# 	elif dict[3] == "Sophomore":
+	# 		sophomore_count = sophomore_count + 1
+	# 	elif dict[3] == "Junior":
+	# 		junior_count = junior_count + 1
+	# 	elif dict[3] == "Senior":
+	# 		senior_count == senior_count + 1
+	# 	else:
+	# 		pass
+	#
+	# class_count_list = [('Freshman', freshman_count), ('Sophomore', sophomore_count),
+	# 	('Junior', junior_count), ('Senior', senior_count)]
+	# class_count_list.sort(class_count_list, key )
 	pass
-
 
 def findMonth(a):
 # Find the most common birth month form this data
