@@ -49,27 +49,29 @@ def classSizes(data):
 # Output: Return a list of tuples sorted by the number of students in that class in
 # descending order
 # [('Senior', 26), ('Junior', 25), ('Freshman', 21), ('Sophomore', 18)]
-	# freshman_count = 0
-	# sophomore_count = 0
-	# junior_count = 0
-	# senior_count = 0
-	#
-	# for dict in data:
-	# 	if dict[3] == "Freshman":
-	# 		freshman_count = freshman_count + 1
-	# 	elif dict[3] == "Sophomore":
-	# 		sophomore_count = sophomore_count + 1
-	# 	elif dict[3] == "Junior":
-	# 		junior_count = junior_count + 1
-	# 	elif dict[3] == "Senior":
-	# 		senior_count == senior_count + 1
-	# 	else:
-	# 		pass
-	#
-	# class_count_list = [('Freshman', freshman_count), ('Sophomore', sophomore_count),
-	# 	('Junior', junior_count), ('Senior', senior_count)]
-	# class_count_list.sort(class_count_list, key )
-	pass
+	freshman_count = 0
+	sophomore_count = 0
+	junior_count = 0
+	senior_count = 0
+
+	for x in data:
+		for key in x:
+			if x[key] == 'Freshman':
+				freshman_count = freshman_count + 1
+			elif x[key] == 'Sophomore':
+				sophomore_count = sophomore_count + 1
+			elif x[key] == 'Junior':
+				junior_count = junior_count + 1
+			elif x[key] == 'Senior':
+				senior_count = senior_count + 1
+
+
+	class_count_list = [('Freshman', freshman_count), ('Sophomore', sophomore_count),
+		('Junior', junior_count), ('Senior', senior_count)]
+	class_count_list.sort(key=lambda tup: tup[1], reverse = True)
+
+	return class_count_list
+
 
 def findMonth(a):
 # Find the most common birth month form this data
@@ -125,19 +127,19 @@ def main():
 	print("First student sorted by First name:")
 	total += test(mySort(data,'First'),'Abbot Le',25)
 	total += test(mySort(data2,'First'),'Adam Rocha',25)
-	
-	# print("First student sorted by Last name:")
-	# total += test(mySort(data,'Last'),'Elijah Adams',25)
-	# total += test(mySort(data2,'Last'),'Elijah Adams',25)
-	#
-	# print("First student sorted by Email:")
-	# total += test(mySort(data,'Email'),'Hope Craft',25)
-	# total += test(mySort(data2,'Email'),'Orli Humphrey',25)
-	#
-	# print("\nEach grade ordered by size:")
-	# total += test(classSizes(data),[('Junior', 28), ('Senior', 27), ('Freshman', 23), ('Sophomore', 22)],25)
-	# total += test(classSizes(data2),[('Senior', 26), ('Junior', 25), ('Freshman', 21), ('Sophomore', 18)],25)
-	#
+
+	print("First student sorted by Last name:")
+	total += test(mySort(data,'Last'),'Elijah Adams',25)
+	total += test(mySort(data2,'Last'),'Elijah Adams',25)
+
+	print("First student sorted by Email:")
+	total += test(mySort(data,'Email'),'Hope Craft',25)
+	total += test(mySort(data2,'Email'),'Orli Humphrey',25)
+
+	print("\nEach grade ordered by size:")
+	total += test(classSizes(data),[('Junior', 28), ('Senior', 27), ('Freshman', 23), ('Sophomore', 22)],25)
+	total += test(classSizes(data2),[('Senior', 26), ('Junior', 25), ('Freshman', 21), ('Sophomore', 18)],25)
+
 	# print("\nThe most common month of the year to be born is:")
 	# total += test(findMonth(data),3,15)
 	# total += test(findMonth(data2),3,15)
