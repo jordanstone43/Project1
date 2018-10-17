@@ -12,7 +12,7 @@ def getData(file):
 	#the keys are from the first row in the data. and the values are each of the other rows
 
 	infile = open(file, "r")
-	lines = infile.readline()
+	lines = infile.readlines()
 	infile.close()
 
 	# Initializes list to hold dictionary objects
@@ -27,8 +27,8 @@ def getData(file):
 			values = line.split(',')
 			line_dict = {}
 			count = 0
-			for x in key_titles:
-				line_dict[x] = values[count]
+			for key in key_titles:
+				line_dict[key] = values[count]
 				count = count + 1
 			list_of_dicts.append(line_dict)
 	return list_of_dicts
@@ -37,7 +37,10 @@ def mySort(data,col):
 # Sort based on key/column
 #Input: list of dictionaries and col (key) to sort on
 #Output: Return the first item in the sorted list as a string of just: firstName lastName
-	sorted_list = sort(data, key = lambda, )
+	sorted_list = sorted(data, key=lambda k: k[col])
+
+	first_and_last = sorted_list[0]['First'] + " " + sorted_list[0]['Last']
+	return first_and_last
 
 
 def classSizes(data):
@@ -122,33 +125,33 @@ def main():
 	print("First student sorted by First name:")
 	total += test(mySort(data,'First'),'Abbot Le',25)
 	total += test(mySort(data2,'First'),'Adam Rocha',25)
-
-	print("First student sorted by Last name:")
-	total += test(mySort(data,'Last'),'Elijah Adams',25)
-	total += test(mySort(data2,'Last'),'Elijah Adams',25)
-
-	print("First student sorted by Email:")
-	total += test(mySort(data,'Email'),'Hope Craft',25)
-	total += test(mySort(data2,'Email'),'Orli Humphrey',25)
-
-	print("\nEach grade ordered by size:")
-	total += test(classSizes(data),[('Junior', 28), ('Senior', 27), ('Freshman', 23), ('Sophomore', 22)],25)
-	total += test(classSizes(data2),[('Senior', 26), ('Junior', 25), ('Freshman', 21), ('Sophomore', 18)],25)
-
-	print("\nThe most common month of the year to be born is:")
-	total += test(findMonth(data),3,15)
-	total += test(findMonth(data2),3,15)
-
-	print("\nSuccessful sort and print to file:")
-	mySortPrint(data,'Last','results.csv')
-	if os.path.exists('results.csv'):
-		total += test(filecmp.cmp('outfile.csv', 'results.csv'),True,20)
-
-	print("\nTest of extra credit: Calcuate average age")
-	total += test(findAge(data), 40, 5)
-	total += test(findAge(data2), 42, 5)
-
-	print("Your final score is " + str(total))
+	
+	# print("First student sorted by Last name:")
+	# total += test(mySort(data,'Last'),'Elijah Adams',25)
+	# total += test(mySort(data2,'Last'),'Elijah Adams',25)
+	#
+	# print("First student sorted by Email:")
+	# total += test(mySort(data,'Email'),'Hope Craft',25)
+	# total += test(mySort(data2,'Email'),'Orli Humphrey',25)
+	#
+	# print("\nEach grade ordered by size:")
+	# total += test(classSizes(data),[('Junior', 28), ('Senior', 27), ('Freshman', 23), ('Sophomore', 22)],25)
+	# total += test(classSizes(data2),[('Senior', 26), ('Junior', 25), ('Freshman', 21), ('Sophomore', 18)],25)
+	#
+	# print("\nThe most common month of the year to be born is:")
+	# total += test(findMonth(data),3,15)
+	# total += test(findMonth(data2),3,15)
+	#
+	# print("\nSuccessful sort and print to file:")
+	# mySortPrint(data,'Last','results.csv')
+	# if os.path.exists('results.csv'):
+	# 	total += test(filecmp.cmp('outfile.csv', 'results.csv'),True,20)
+	#
+	# print("\nTest of extra credit: Calcuate average age")
+	# total += test(findAge(data), 40, 5)
+	# total += test(findAge(data2), 42, 5)
+	#
+	# print("Your final score is " + str(total))
 
 # Standard boilerplate to call the main() function that tests all your code
 if __name__ == '__main__':
