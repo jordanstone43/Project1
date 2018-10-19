@@ -1,9 +1,8 @@
 import os
 import filecmp
 from dateutil.relativedelta import *
-from datetime import date
+import datetime
 
-# Hello
 
 def getData(file):
 	# get a list of dictionary objects from the file
@@ -18,19 +17,27 @@ def getData(file):
 	# Initializes list to hold dictionary objects
 	list_of_dicts = []
 
+
 	first_line = True
 	for line in lines:
+		# Creates list of key titles from first line of file
+		# First,Last,Email,Class,DOB
 		if first_line:
 			key_titles = line.split(',')
 			first_line = False
 		else:
+			# Creates list of student data from line
 			values = line.split(',')
+			# Initializes dictionary to hold keys
 			line_dict = {}
 			count = 0
+			# Loops through each key title, incrementing count to match key
 			for key in key_titles:
 				line_dict[key] = values[count]
 				count = count + 1
+			# Appends new line_dict, a dictionary of studen data, to the list
 			list_of_dicts.append(line_dict)
+	# Returns a list of dictionaries of student data
 	return list_of_dicts
 
 def mySort(data,col):
@@ -54,7 +61,10 @@ def classSizes(data):
 	junior_count = 0
 	senior_count = 0
 
+	# Loops through each dictionary in the list of dictionaries
 	for x in data:
+		# Loops through each key in the dictionary
+		# Increments each class' count if key is found
 		for key in x:
 			if x[key] == 'Freshman':
 				freshman_count = freshman_count + 1
@@ -70,6 +80,7 @@ def classSizes(data):
 		('Junior', junior_count), ('Senior', senior_count)]
 	class_count_list.sort(key=lambda tup: tup[1], reverse = True)
 
+	# Returns list of tuples of the number of students in each class
 	return class_count_list
 
 
@@ -77,8 +88,22 @@ def findMonth(a):
 # Find the most common birth month form this data
 # Input: list of dictionaries
 # Output: Return the month (1-12) that had the most births in the data
+	month_count_dict = { 1 : 0, 2 : 0, 3 : 0, 4 : 0, 5 : 0, 6 : 0, 7 : 0,
+	 8: 0, 9 : 0, 10 : 0, 11 : 0, 12 : 0}
 
-	pass
+	# Loops through each dictionary in list of dicionaries 'a'
+	for x in a:
+		# Splits the DOB key in dictionary at /, creating new birthday list,
+		# holding month value, day value, and year value.
+		birth_dates = x['DOB\n'].split('/')
+		# Loops through each key in month_count_dict
+		for key in month_count_dict:
+			# Increments month counter
+			if int(birth_dates[0]) == key:
+				month_count_dict[key] = month_count_dict[key] + 1
+
+	sorted_by_value = sorted(month_count_dict.items(), key=lambda kv: kv[1], reverse=True)
+	return sorted_by_value[0][0]
 
 def mySortPrint(a,col,fileName):
 #Similar to mySort, but instead of returning single
@@ -87,7 +112,15 @@ def mySortPrint(a,col,fileName):
 #Input: list of dictionaries, col (key) to sort by and output file name
 #Output: No return value, but the file is written
 
-	pass
+	sorted_list = sorted(a, key=lambda k: k[col])
+	outFile = open(fileName,'w')
+
+	sorted_list = sorted(a, key = lambda x: x[col])
+	out_file = open(fileName, 'w')
+	for a in sorted_list:
+		out_file.write('{},{},{}'.format(a['First'], a['Last'], a['Email']))
+		out_file.write('\n')
+	out_file.close()
 
 def findAge(a):
 # def findAge(a):
@@ -96,7 +129,19 @@ def findAge(a):
 # integer.  You will need to work with the DOB and the current date to find the current
 # age in years.
 
-	pass
+	age = 0
+	alist = []
+	for x in a:
+		date = (x['DOB\n'].split('/'))
+		dates = [int(x) for x in date]
+		today = datetime.date.today()
+		born = datetime.date(dates[2], dates[0], dates[1])
+		age = today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+
+		# age = 2017 - dates[2]
+		alist.append(age)
+	return round(sum(alist)/len(alist))
+
 
 
 ################################################################
@@ -120,7 +165,7 @@ def main():
 	total = 0
 	print("Read in Test data and store as a list of dictionaries")
 	data = getData('P1DataA.csv')
-	data2 = getData('P1DataB.csv')
+	data2 = getData('P1DataB2.csv')
 	total += test(type(data),type([]),50)
 
 	print()
@@ -140,20 +185,20 @@ def main():
 	total += test(classSizes(data),[('Junior', 28), ('Senior', 27), ('Freshman', 23), ('Sophomore', 22)],25)
 	total += test(classSizes(data2),[('Senior', 26), ('Junior', 25), ('Freshman', 21), ('Sophomore', 18)],25)
 
-	# print("\nThe most common month of the year to be born is:")
-	# total += test(findMonth(data),3,15)
-	# total += test(findMonth(data2),3,15)
-	#
-	# print("\nSuccessful sort and print to file:")
-	# mySortPrint(data,'Last','results.csv')
-	# if os.path.exists('results.csv'):
-	# 	total += test(filecmp.cmp('outfile.csv', 'results.csv'),True,20)
-	#
-	# print("\nTest of extra credit: Calcuate average age")
-	# total += test(findAge(data), 40, 5)
-	# total += test(findAge(data2), 42, 5)
-	#
-	# print("Your final score is " + str(total))
+	print("\nThe most common month of the year to be born is:")
+	total += test(findMonth(data),3,15)
+	total += test(findMonth(data2),3,15)
+
+	print("\nSuccessful sort and print to file:")
+	mySortPrint(data,'Last','results.csv')
+	if os.path.exists('results.csv'):
+		total += test(filecmp.cmp('outfile.csv', 'results.csv'),True,20)
+
+	print("\nTest of extra credit: Calcuate average age")
+	total += test(findAge(data), 40, 5)
+	total += test(findAge(data2), 42, 5)
+
+	print("Your final score is " + str(total))
 
 # Standard boilerplate to call the main() function that tests all your code
 if __name__ == '__main__':
