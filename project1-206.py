@@ -138,7 +138,6 @@ def findAge(a):
 		born = datetime.date(dates[2], dates[0], dates[1])
 		age = today.year - born.year - ((today.month, today.day) < (born.month, born.day))
 
-		# age = 2017 - dates[2]
 		alist.append(age)
 	return round(sum(alist)/len(alist))
 
